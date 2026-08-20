@@ -1,0 +1,43 @@
+-- ============================================================================
+-- Foreign Key constraints - Epic 0.1
+-- ============================================================================
+
+-- Account belongs to a Customer
+ALTER TABLE CM_ACCOUNT
+    ADD CONSTRAINT FK_ACCOUNT_CUSTOMER
+    FOREIGN KEY (CUSTOMER_ID) REFERENCES CM_CUSTOMER (CUSTOMER_ID);
+
+-- Card belongs to an Account
+ALTER TABLE CM_CARD
+    ADD CONSTRAINT FK_CARD_ACCOUNT
+    FOREIGN KEY (ACCOUNT_ID) REFERENCES CM_ACCOUNT (ACCOUNT_ID);
+
+-- Card is issued against a Card Product
+ALTER TABLE CM_CARD
+    ADD CONSTRAINT FK_CARD_PRODUCT
+    FOREIGN KEY (CARD_PRODUCT_ID) REFERENCES CM_CARD_PRODUCT (CARD_PRODUCT_ID);
+
+-- Card references its PAN token in the vault (CARD-002)
+ALTER TABLE CM_CARD
+    ADD CONSTRAINT FK_CARD_TOKEN
+    FOREIGN KEY (CARD_TOKEN_ID) REFERENCES CM_TOKEN_VAULT (TOKEN_ID);
+
+-- User-role mapping references a role
+ALTER TABLE CM_USER_ROLE_MAP
+    ADD CONSTRAINT FK_USERROLE_ROLE
+    FOREIGN KEY (ROLE_ID) REFERENCES CM_ROLE (ROLE_ID);
+
+-- Data access log references a role
+ALTER TABLE CM_DATA_ACCESS_LOG
+    ADD CONSTRAINT FK_ACCESSLOG_ROLE
+    FOREIGN KEY (ROLE_ID) REFERENCES CM_ROLE (ROLE_ID);
+
+-- Data access log references the card that was viewed
+ALTER TABLE CM_DATA_ACCESS_LOG
+    ADD CONSTRAINT FK_ACCESSLOG_CARD
+    FOREIGN KEY (CARD_ID) REFERENCES CM_CARD (CARD_ID);
+
+-- OFAC screen result optionally references a matched watchlist entry
+ALTER TABLE CM_OFAC_SCREEN_RESULT
+    ADD CONSTRAINT FK_OFACRESULT_WATCHLIST
+    FOREIGN KEY (MATCHED_WATCHLIST_ID) REFERENCES CM_OFAC_WATCHLIST (WATCHLIST_ID);
